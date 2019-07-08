@@ -2,15 +2,15 @@
 **Author**: Aliya Summers
 **Version**: 1.0.0
 
-##Overview
+## Overview
     Problem domain here
-##Getting Started
+## Getting Started
     How to run on personal machine
-##Architecture
+## Architecture
     languages, libraries etc
-#Change log
+# Change log
 07-08-2019 15:23 - Dice roll working
-
+07-08-2019 16:45 - saving dice as desired
 
 <!-- Goals:
 Simulate rolling between 1 and 6 dice

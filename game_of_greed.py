@@ -21,10 +21,14 @@ max_dice = []
 saved_dice = []
 active_dice = []
 
-for i in range(6):
-    i = random.randint(1, 6) 
-    max_dice.append(i)
-    active_dice.append(i)
+
+def randomize_dice(dice):
+    for i in range(6):
+        i = random.randint(1, 6) 
+        max_dice.append(i)
+        active_dice.append(i)
+
+randomize_dice(max_dice)
 
 # prints the array of dice with random numbers between 1 and 6
 # do not need to shuffle, since randomly generating numbers for them takes care of that
@@ -34,7 +38,11 @@ for i in range(6):
 
 
 while True:
-    dice_prompt = f"""What do you want to save?{active_dice}"""
+    if len(active_dice) >= 1:
+        dice_prompt = f"""What do you want to save?{active_dice}"""
+    else:
+        dice_prompt = f"""What do you want to save from max?{max_dice}"""
+
     save_these = int(input(dice_prompt))
 
     if save_these not in max_dice:
@@ -52,6 +60,8 @@ while True:
     if len(active_dice) == 0:
         print('you are out of dice. Try again')
         print(dice_prompt)
+        max_dice = []
+        randomize_dice(max_dice)
         print(max_dice)
         continue
 
