@@ -1,16 +1,3 @@
-
-# Set aside dice after each roll
-    # when the input number matches the number of the dice, take away that many of that number from the main dice pool
-    # re-render the remaining number of dice, repeat as needed
-
-# allow user to enter their score
-    # see demo
-
-# let user bank current score
-    # score will += input
-    # when banked, reset dice back to 6
-
-# have a counter for rounds
 import random
 
 total_score = 0
@@ -33,20 +20,10 @@ randomize_dice(max_dice)
 # sorts through lists of dice. Lets user pick one die at a time, and removes it from the available pool of dice. 
 
 while True:
-    if len(active_dice) >= 1:
-        dice_prompt = f"""What do you want to save?{active_dice}"""
-    else:
-        dice_prompt = f"""What do you want to save?{max_dice}"""
-
-    # this bit is commented out until I can test it
-    # save_these = input(dice_prompt)
-    # saved_dice = []
-
-    # for char in save_these:
-    #     saved_dice.append(int(char))
-    # print(saved_dice)
+    dice_prompt = f"""What do you want to save?{active_dice}"""
 
     save_these = int(input(dice_prompt))
+
 
     if save_these in max_dice:
 
@@ -56,15 +33,35 @@ while True:
         print(f'these are the dice you have banked: {saved_dice}')
         print(f'these are your remaining dice for the round: {active_dice}')
 
-    if len(active_dice) == 0:
+    reroll_prompt = 'If you would like to reroll the remaining dice, enter Y. If you would like to continue picking dice, enter C.'
+    reroll_input = input(reroll_prompt)
+
+    if reroll_input == 'Y':
+            randomize_dice(active_dice)
+
+    if len(active_dice) <= 3:
+        add_to_score_prompt = "Would you like to enter your score for this roll, and roll remaining dice? Y/N. "
+        add_to_score_input = input(add_to_score_prompt)
+
+
+        if add_to_score_input == 'Y':
+            round_score_prompt = "Enter your score"
+            round_score_input = int(input(round_score_prompt))
+            round_score += round_score_input
+            print(f'Your current score for this round: {round_score}')
+
+        elif add_to_score_input == 'N':
+            print('this will reroll all the dice')
+
+    if len(active_dice) == 0 and current_round < 3:
         print(f'you are out of dice. Try again. End of round {current_round}')
         current_round += 1
-        print(dice_prompt)
+        total_score += round_score
+        round_score = 0
         saved_dice = []
         max_dice = []
         randomize_dice(max_dice)
-        print(max_dice)
         continue
-
-
+    if total_score >= 10000:
+        print(f'this is your final score: {total_score}. It took you {current_round} rounds to get here')
 
