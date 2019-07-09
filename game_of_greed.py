@@ -13,9 +13,7 @@ def randomize_dice(dice):
         i = random.randint(1, 6) 
         max_dice.append(i)
         active_dice.append(i)
-
-# this allows me to start with a random set of dice to pick through
-randomize_dice(max_dice)
+    return dice
 
 # sorts through lists of dice. Lets user pick one die at a time, and removes it from the available pool of dice. 
 
@@ -23,19 +21,25 @@ def start_game():
     start_game_prompt = input('Are you read to start a game of greed?')
     
     if start_game_prompt == 'Y':
-        #TODO: fill this in     
-        print('prepare to do things')
+        initial_dice = randomize_dice(max_dice)    
+        print(str(initial_dice))
 
     elif start_game_prompt == 'N':
-        #TODO: fill this in
-        print('prepare to stop the game')
+        print('you have exited the game')
 
 start_game()
 
-def save_these_dice():
+def save_these_dice_flow():
     save_these_dice_prompt = input('Do you want to save any of these dice?')
 
-    if save_these_ prompt = 
+    if save_these_dice_prompt = 'Y':
+        # TODO: fill in with dice-saving code
+        # TODO: call banking function
+    elif save_these_dice_prompt = 'N':
+        # TODO: reroll current bundle of dice, ask question again after
+
+def save_from_roll():
+    
 
 # while True:
 #     dice_prompt = f"""What do you want to save?{active_dice}"""
