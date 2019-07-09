@@ -15,12 +15,11 @@ import random
 
 total_score = 0
 round_score = 0
-current_round = 0
+current_round = 1
 
 max_dice = []
-saved_dice = []
 active_dice = []
-
+saved_dice = []
 
 def randomize_dice(dice):
     for i in range(6):
@@ -28,26 +27,26 @@ def randomize_dice(dice):
         max_dice.append(i)
         active_dice.append(i)
 
+# this allows me to start with a random set of dice to pick through
 randomize_dice(max_dice)
 
-# prints the array of dice with random numbers between 1 and 6
-# do not need to shuffle, since randomly generating numbers for them takes care of that
-
-
-
-
+# sorts through lists of dice. Lets user pick one die at a time, and removes it from the available pool of dice. 
 
 while True:
     if len(active_dice) >= 1:
         dice_prompt = f"""What do you want to save?{active_dice}"""
     else:
-        dice_prompt = f"""What do you want to save from max?{max_dice}"""
+        dice_prompt = f"""What do you want to save?{max_dice}"""
+
+    # this bit is commented out until I can test it
+    # save_these = input(dice_prompt)
+    # saved_dice = []
+
+    # for char in save_these:
+    #     saved_dice.append(int(char))
+    # print(saved_dice)
 
     save_these = int(input(dice_prompt))
-
-    if save_these not in max_dice:
-        print('that number doesn\'t exist here')
-        break
 
     if save_these in max_dice:
 
@@ -58,21 +57,14 @@ while True:
         print(f'these are your remaining dice for the round: {active_dice}')
 
     if len(active_dice) == 0:
-        print('you are out of dice. Try again')
+        print(f'you are out of dice. Try again. End of round {current_round}')
+        current_round += 1
         print(dice_prompt)
+        saved_dice = []
         max_dice = []
         randomize_dice(max_dice)
         print(max_dice)
         continue
 
-
-# while len(active_dice) != 0:
-#      print('enter your score for this round:')
-#         entered_score = int(input())
-
-#         round_score += entered_score
-#         total_score += entered_score
-#         print(f'this is your total score for the round: {round_score}')
-#         break
 
 
