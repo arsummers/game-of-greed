@@ -112,9 +112,9 @@ def play_round():
 
 
 # should be in name == main thing
-
-start_game()   
-play_round()
+if __name__ == "__main__":
+    start_game()   
+    play_round()
 
 
 # roll_dice(active_dice)  
