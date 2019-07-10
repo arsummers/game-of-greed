@@ -9,25 +9,26 @@ total_score = 0
 round_score = 0
 current_round = 1
 
-max_dice = []
 active_dice = []
 saved_dice = []
 
 
-def randomize_dice(dice):
+def roll_dice(dice):
     for i in range(6):             
         i = random.randint(1, 6) 
-        max_dice.append(str(i))
-        active_dice.append(str(i))
+        active_dice.append(i)
+    print(active_dice)
     return dice
 
 def current_active_dice():
-    global active_dice
-    initial_dice = randomize_dice(active_dice)
+    # global active_dice
+    initial_dice = roll_dice(active_dice)
 
-    # This just keeps the list of active dice from getting too long
-    if len(initial_dice) > 6:
-        active_dice = []
+    # This just keeps the list of active dice from getting too long, and resets it for future rolls
+    if len(active_dice) > 6:
+        # active_dice = []
+        next_dice = roll_dice(active_dice)
+        print(f'This is your next round: {next_dice}')
 
     # These are the dice I want to work with
     if len(initial_dice) <= 6:
@@ -52,18 +53,25 @@ def save_from_roll():
 
 # TODO: find a good way to repeat this
 def save_these_dice_flow():
-    # while current_round < 3
-    save_decision_prompt = input('Do you want to save any of these dice?')
+    global current_round
 
-    if save_decision_prompt == 'Y':
-        save_from_roll()
-    elif save_decision_prompt == 'N':
-        global current_round
-        current_round += 1
-        print(f'The dice will now reroll. Start of round {current_round}')
+
+    while len(saved_dice) <= 6:
+        save_decision_prompt = input('Do you want to save any of these dice?')
+
+        if save_decision_prompt == 'Y':
+            current_round += 1
+            save_from_roll()
+        if save_decision_prompt == 'N':
+            current_round += 1
+            print(f'The dice will now reroll. Start of round {current_round}')
         # TODO: work on this bit - it isn't re-rendering as needed
-        current_active_dice()
-        save_from_roll()
+            save_from_roll()
+            save_decision_prompt = input('Do you want to save any of these dice?')
+            print(active_dice)
+            # current_active_dice()
+        
+            continue
         # not quite what I'm after but close
         # save_these_dice_flow()
 
@@ -74,8 +82,10 @@ def start_game():
     
 
     if start_game_prompt == 'Y':
-        current_active_dice()
-        save_these_dice_flow()
+        # current_active_dice()
+        # roll_dice is working better
+        roll_dice(active_dice)
+        # save_these_dice_flow()
 
     elif start_game_prompt == 'N':
         print('you have exited the game')
@@ -107,7 +117,7 @@ start_game()
 #     reroll_input = input(reroll_prompt)
 
 #     if reroll_input == 'Y':
-#             randomize_dice(active_dice)
+#             roll_dice(active_dice)
 
 #     if len(active_dice) <= 3:
 #         add_to_score_prompt = "Would you like to enter your score for this roll, and roll remaining dice? Y/N. "
