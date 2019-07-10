@@ -1,5 +1,10 @@
 import random
 
+def determine_score(vals):
+    # between 1 and 6 values
+    # test saved dice for scoring
+    return None
+
 total_score = 0
 round_score = 0
 current_round = 1
@@ -8,38 +13,81 @@ max_dice = []
 active_dice = []
 saved_dice = []
 
+
 def randomize_dice(dice):
-    for i in range(6):
+    for i in range(6):             
         i = random.randint(1, 6) 
-        max_dice.append(i)
-        active_dice.append(i)
+        max_dice.append(str(i))
+        active_dice.append(str(i))
     return dice
 
-# sorts through lists of dice. Lets user pick one die at a time, and removes it from the available pool of dice. 
+def current_active_dice():
+    global active_dice
+    initial_dice = randomize_dice(active_dice)
+
+    # This just keeps the list of active dice from getting too long
+    if len(initial_dice) > 6:
+        active_dice = []
+
+    # These are the dice I want to work with
+    if len(initial_dice) <= 6:
+        print(active_dice)
+    
+
+def save_from_roll():
+    save_from_roll_prompt = input('Which dice to you wish to save for scoring?')
+
+    saved_dice_values = str(save_from_roll_prompt)
+    print(f'These are the values of the saved dice: {saved_dice_values}')
+
+    # is this a subsection of the dice pool - going to need something other than in
+    if saved_dice_values in active_dice:
+        saved_dice.append(save_from_roll_prompt)
+        active_dice.remove(save_from_roll_prompt)
+        print(f'Here are the dice you banked: {saved_dice}')
+        print(f'Here are your remaining dice: {active_dice}')
+
+    elif saved_dice_values not in active_dice:
+        print('That was not a valid die. Don\'t be a cheater!')
+
+# TODO: find a good way to repeat this
+def save_these_dice_flow():
+    # while current_round < 3
+    save_decision_prompt = input('Do you want to save any of these dice?')
+
+    if save_decision_prompt == 'Y':
+        save_from_roll()
+    elif save_decision_prompt == 'N':
+        global current_round
+        current_round += 1
+        print(f'The dice will now reroll. Start of round {current_round}')
+        # TODO: work on this bit - it isn't re-rendering as needed
+        current_active_dice()
+        save_from_roll()
+        # not quite what I'm after but close
+        # save_these_dice_flow()
+
 
 def start_game():
-    start_game_prompt = input('Are you read to start a game of greed?')
+    start_game_prompt = input('Are you ready to start a game of greed?')
+    print('Here are your starting dice: ')
     
+
     if start_game_prompt == 'Y':
-        initial_dice = randomize_dice(max_dice)    
-        print(str(initial_dice))
+        current_active_dice()
+        save_these_dice_flow()
 
     elif start_game_prompt == 'N':
         print('you have exited the game')
-
-start_game()
-
-def save_these_dice_flow():
-    save_these_dice_prompt = input('Do you want to save any of these dice?')
-
-    if save_these_dice_prompt = 'Y':
-        # TODO: fill in with dice-saving code
-        # TODO: call banking function
-    elif save_these_dice_prompt = 'N':
-        # TODO: reroll current bundle of dice, ask question again after
-
-def save_from_roll():
+# should be in name == main thing
+start_game()   
     
+
+# TODO: select multiple dice at once. Successfully remove from active pool. Write tests for scoring
+
+
+
+
 
 # while True:
 #     dice_prompt = f"""What do you want to save?{active_dice}"""
@@ -86,4 +134,3 @@ def save_from_roll():
 #         continue
 #     if total_score >= 10000:
 #         print(f'this is your final score: {total_score}. It took you {current_round} rounds to get here')
-

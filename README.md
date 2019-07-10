@@ -17,7 +17,7 @@
 07-08-2019 16:45 - saving dice as desired
 07-08-2019 16:56 - dice saving and generating randomly through multiple rounds
 
-
+07-09-2019 15:37 - added game init function
 
 <!-- Goals:
 Simulate rolling between 1 and 6 dice
