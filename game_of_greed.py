@@ -1,67 +1,90 @@
 import random
 
-total_score = 0
-round_score = 0
+# global variables - they are all intentially mutable
+score_dict = {
+    "total_score" : 0,
+    "round_score" : 0,
+}
+
 current_round = 1
 
-max_dice = []
 active_dice = []
 saved_dice = []
 
-def randomize_dice(dice):
-    for i in range(6):
+def start_game():
+    start_game_prompt = input('Are you ready to start a game of greed? (y/n)')
+    
+    if start_game_prompt == 'y':
+        print('Here are your starting dice: ')
+        # dice roll function is called after this in the call stack below
+
+    elif start_game_prompt == 'n':
+        global current_round
+        current_round += 3
+        print('you have exited the game')
+
+# TODO: re-write this in such a way that it resets itself. Currently, the old remaining dice are added on, and the new roll is appended to that list. I am trying to figure out the best way to remove the old dice and only reroll a new hand
+def roll_dice(dice):
+    for i in range(6):             
         i = random.randint(1, 6) 
-        max_dice.append(i)
         active_dice.append(i)
-
-# this allows me to start with a random set of dice to pick through
-randomize_dice(max_dice)
-
-# sorts through lists of dice. Lets user pick one die at a time, and removes it from the available pool of dice. 
-
-while True:
-    dice_prompt = f"""What do you want to save?{active_dice}"""
-
-    save_these = int(input(dice_prompt))
+    print(active_dice)
+    return dice
 
 
-    if save_these in max_dice:
+def set_aside_dice():
+    save_question = input('Would you live to save any dice?(y/n)')
 
-        saved_dice.append(save_these)
-        active_dice.remove(save_these)
+    if save_question == 'y':
+        print("""
+Which dice do you wish to set aside any of these dice for scoring? 
+Please separate your numbers with a space
+        """)
+        saved_dice = [int(n) for n in input().split(' ')]
 
-        print(f'these are the dice you have banked: {saved_dice}')
-        print(f'these are your remaining dice for the round: {active_dice}')
+        for i in saved_dice:
+            active_dice.remove(i)
+        print(f'These are the dice you saved: {saved_dice}')
+        print(f'These are the dice you have remaining: {active_dice}')
 
-    reroll_prompt = 'If you would like to reroll the remaining dice, enter Y. If you would like to continue picking dice, enter C.'
-    reroll_input = input(reroll_prompt)
-
-    if reroll_input == 'Y':
-            randomize_dice(active_dice)
-
-    if len(active_dice) <= 3:
-        add_to_score_prompt = "Would you like to enter your score for this roll, and roll remaining dice? Y/N. "
-        add_to_score_input = input(add_to_score_prompt)
+    elif save_question == 'n':
+        # breaks out of the game - currently here so I can playtest
+        global current_round
+        current_round += 3
 
 
-        if add_to_score_input == 'Y':
-            round_score_prompt = "Enter your score"
-            round_score_input = int(input(round_score_prompt))
-            round_score += round_score_input
-            print(f'Your current score for this round: {round_score}')
 
-        elif add_to_score_input == 'N':
-            print('this will reroll all the dice')
+def determine_score(vals):
+    print(f'these are the number of ones: {saved_dice}')
+    if saved_dice.count(1) == 1:
+        score_dict["round_score"] += (saved_dice.count(1) * 100)
 
-    if len(active_dice) == 0 and current_round < 3:
-        print(f'you are out of dice. Try again. End of round {current_round}')
-        current_round += 1
-        total_score += round_score
-        round_score = 0
-        saved_dice = []
-        max_dice = []
-        randomize_dice(max_dice)
-        continue
-    if total_score >= 10000:
-        print(f'this is your final score: {total_score}. It took you {current_round} rounds to get here')
+    elif saved_dice.count(1) == 2:
+        score_dict["round_score"] += ((saved_dice.count(1) * 2) * 100)
 
+
+    print(f'Your score for this round: {score_dict["round_score"]}')
+    return vals
+
+
+
+def play_round():
+    roll_dice(active_dice)
+    set_aside_dice()
+    determine_score(score_dict["total_score"])
+    # when user is done picking dice:
+        # calculate score for the round
+        # give option to:
+            # re-roll remaining dice
+                # if re-rolled and no score, zero out score for the round
+            # bank score and start a new round with 6 dice
+                # add banked score to total score
+                
+
+
+
+# This initiates the game, and allows the tests to accept input
+if __name__ == "__main__":
+    start_game()
+    while current_round <= 3:   
+        play_round()
