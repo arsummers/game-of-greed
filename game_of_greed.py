@@ -1,10 +1,10 @@
 import random
 
 # global variables - they are all intentially mutable
-score_dict = {
-    "total_score" : 0,
-    "round_score" : 0,
-}
+
+total_score = 0
+round_score = 0
+score = 0
 
 current_round = 1
 
@@ -34,6 +34,8 @@ def start_dice(dice):
 
 def roll_dice(dice):
     global active_dice
+
+    # resets the active dice pool to keep it from getting larger than 6 dice
     active_dice = []            
 
     for i in range(len(dice)): 
@@ -44,6 +46,7 @@ def roll_dice(dice):
 
 
 def set_aside_dice():
+
     save_question = input('Would you live to save any dice?(y/n)')
 
     if save_question == 'y':
@@ -56,15 +59,24 @@ Please separate your numbers with a space
         for i in saved_dice:
             active_dice.remove(i)
         print(f'These are the dice you saved: {saved_dice}')
-        print(f'These are the dice you have remaining: {active_dice}')
+        print(f'These are the dice you have remaining. They have been rerolled for you:')
 
     elif save_question == 'n':
-        # breaks out of the game - currently here so I can playtest
-        global current_round
-        current_round += 3
+        # breaks out of the game - currently set to 3 so I can playtest easily
+        start_new_round_prompt = input('Would you like to REROLL with 6 new dice and start a new round, or would you like to QUIT the game?')
+
+        if start_new_round_prompt == 'QUIT':
+            global current_round
+            current_round += 3
+        elif start_new_round_prompt == 'REROLL':
+            start_dice(active_dice)
+            set_aside_dice()
+            current_round += 1
+
 
 
 def determine_score(dice_values):
+    global score
     dice_summary = {
         1: dice_values.count(1),
         2: dice_values.count(2),
@@ -81,28 +93,65 @@ def determine_score(dice_values):
         if count != 1:
             is_a_straight = False
         if count == 2:
-            pair_counter += 1
+            pair_counter += 1    
     
     if is_a_straight:
         return 1500
-    
+
     score = 0
+    
     score += dice_summary[1] * 100
     score += dice_summary[5] * 50
 
     if pair_counter == 3:
         score = 1000
+
+    # TODO: learn the syntax to make this work - should pass remaining ones tests when out of pseudo code
+    # to test ones greater than count 3:
+        # if count of 1 >= 3:
+            # score = 1000
+            # repeat for each die past 3
+            # score += 1000
+
+    # to test non-one rolls of 3 or more:
+        # if count of that number >= 3:
+            # score = num * 100
+            # repeat for each die past 3
+            # score += score
     
     return score
 
 
-# TODO: What's the best way to test to see if this works?
+
+
+def play_round():
+    set_aside_dice()
+    roll_dice(active_dice)
+    determine_score(saved_dice) 
+    # when user is done picking dice:
+        # calculate score for the round
+        # give option to:
+            # re-roll remaining dice
+                # if re-rolled and no score, zero out score for the round
+            # bank score and start a new round with 6 dice
+                # add banked score to total score
+                
+
+# This initiates the game, and allows the tests to accept input
+if __name__ == "__main__":
+    start_game()
+    start_dice(active_dice) 
+    while current_round <= 3:  
+        play_round()
+
+
+# after main game, print scores to scores.txt
 def read_file(path):
     try:
         with open(path) as file:
             contents = file.read()
 
-        contents += ' - has been read'
+        contents += f'Scores: {score} - has been read'
 
         with open('scores.txt', 'w') as outputfile:
             outputfile.write(contents)
@@ -121,26 +170,3 @@ except FileNotFoundError as error:
 
 except:
     print('it was a different error')
-
-
-def play_round():
-    set_aside_dice()
-    roll_dice(active_dice)
-    determine_score(saved_dice) 
-    # when user is done picking dice:
-        # calculate score for the round
-        # give option to:
-            # re-roll remaining dice
-                # if re-rolled and no score, zero out score for the round
-            # bank score and start a new round with 6 dice
-                # add banked score to total score
-                
-
-
-
-# This initiates the game, and allows the tests to accept input
-if __name__ == "__main__":
-    start_game()
-    start_dice(active_dice) 
-    while current_round <= 3:  
-        play_round()
