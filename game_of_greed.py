@@ -12,18 +12,18 @@ active_dice = []
 saved_dice = []
 
 def start_game():
-    start_game_prompt = input('Are you ready to start a game of greed? (y/n)')
+    start_game_prompt = input('Are you ready to start a game of greed? (Y/N)')
     
-    if start_game_prompt == 'y':
+    if start_game_prompt == 'Y':
         print('Here are your starting dice: ')
         # dice roll function is called after this in the call stack below
 
-    elif start_game_prompt == 'n':
+    elif start_game_prompt == 'N':
         global current_round
         current_round += 3
         print('you have exited the game')
 
-# TODO: re-write this in such a way that it resets itself after it reaches 6+ in length. Currently, the old remaining dice are added on, and the new roll is appended to that list. I am trying to figure out the best way to remove the old dice and only reroll a new hand
+        
 def start_dice(dice):
     for i in range(6):             
         i = random.randint(1, 6) 
@@ -34,7 +34,6 @@ def start_dice(dice):
 
 def roll_dice(dice):
     global active_dice
-
     # resets the active dice pool to keep it from getting larger than 6 dice
     active_dice = []            
 
@@ -46,10 +45,10 @@ def roll_dice(dice):
 
 
 def set_aside_dice():
+    global active_dice
+    save_question = input('Would you live to save any dice?(Y/N)')
 
-    save_question = input('Would you live to save any dice?(y/n)')
-
-    if save_question == 'y':
+    if save_question == 'Y':
         print("""
 Which dice do you wish to set aside any of these dice for scoring? 
 Please separate your numbers with a space
@@ -61,7 +60,7 @@ Please separate your numbers with a space
         print(f'These are the dice you saved: {saved_dice}')
         print(f'These are the dice you have remaining. They have been rerolled for you:')
 
-    elif save_question == 'n':
+    elif save_question == 'N':
         # breaks out of the game - currently set to 3 so I can playtest easily
         start_new_round_prompt = input('Would you like to REROLL with 6 new dice and start a new round, or would you like to QUIT the game?')
 
@@ -69,6 +68,7 @@ Please separate your numbers with a space
             global current_round
             current_round += 3
         elif start_new_round_prompt == 'REROLL':
+            active_dice = []
             start_dice(active_dice)
             set_aside_dice()
             current_round += 1
@@ -122,21 +122,19 @@ def determine_score(dice_values):
     return score
 
 
-
-
 def play_round():
     set_aside_dice()
     roll_dice(active_dice)
     determine_score(saved_dice) 
+    # TODO: see below
     # when user is done picking dice:
         # calculate score for the round
         # give option to:
-            # re-roll remaining dice
+            # re-roll remaining dice- DONE
                 # if re-rolled and no score, zero out score for the round
             # bank score and start a new round with 6 dice
                 # add banked score to total score
-                
-
+                   
 # This initiates the game, and allows the tests to accept input
 if __name__ == "__main__":
     start_game()
