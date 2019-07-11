@@ -104,9 +104,9 @@ def test_two_trios():
     assert determine_score([2,2,2,4,4,4]) == 700
 
 
-# NOT PASSING
-
 def test_roll_dice():
     # not sure how to set this up
     # I need it to check that the length of the active dice list <= 6 and that none of their values are higher than 6
     assert roll_dice
+
+# TODO: insert test_read_file(), unsure of syntax since it has an argument
