@@ -11,34 +11,6 @@ current_round = 1
 active_dice = []
 saved_dice = []
 
-def read_file(path):
-    try:
-        with open(path) as file:
-            contents = file.read()
-
-        contents += ' - has been read'
-
-        with open('scores.txt', 'w') as outputfile:
-            outputfile.write(contents)
-
-        print('write completed')
-
-    finally:
-        print('Thanks for playing!')
-
-try:
-    read_file('house_rules.txt')
-
-except FileNotFoundError as error:
-    print('handled error: ')
-    print(error)
-
-except:
-    print('it was a different error')
-
-
-
-
 def start_game():
     start_game_prompt = input('Are you ready to start a game of greed? (y/n)')
     
@@ -51,10 +23,21 @@ def start_game():
         current_round += 3
         print('you have exited the game')
 
-# TODO: re-write this in such a way that it resets itself. Currently, the old remaining dice are added on, and the new roll is appended to that list. I am trying to figure out the best way to remove the old dice and only reroll a new hand
-def roll_dice(dice):
+# TODO: re-write this in such a way that it resets itself after it reaches 6+ in length. Currently, the old remaining dice are added on, and the new roll is appended to that list. I am trying to figure out the best way to remove the old dice and only reroll a new hand
+def start_dice(dice):
     for i in range(6):             
         i = random.randint(1, 6) 
+        active_dice.append(i)
+    print(active_dice)
+    return dice
+
+
+def roll_dice(dice):
+    global active_dice
+    active_dice = []            
+
+    for i in range(len(dice)): 
+        i = random.randint(1, 6)        
         active_dice.append(i)
     print(active_dice)
     return dice
@@ -113,10 +96,37 @@ def determine_score(dice_values):
     return score
 
 
+# TODO: What's the best way to test to see if this works?
+def read_file(path):
+    try:
+        with open(path) as file:
+            contents = file.read()
+
+        contents += ' - has been read'
+
+        with open('scores.txt', 'w') as outputfile:
+            outputfile.write(contents)
+
+        print('write completed')
+
+    finally:
+        print('Thanks for playing!')
+
+try:
+    read_file('house_rules.txt')
+
+except FileNotFoundError as error:
+    print('handled error: ')
+    print(error)
+
+except:
+    print('it was a different error')
+
+
 def play_round():
-    roll_dice(active_dice)
     set_aside_dice()
-    # determine_score(saved_dice) 
+    roll_dice(active_dice)
+    determine_score(saved_dice) 
     # when user is done picking dice:
         # calculate score for the round
         # give option to:
@@ -131,5 +141,6 @@ def play_round():
 # This initiates the game, and allows the tests to accept input
 if __name__ == "__main__":
     start_game()
-    while current_round <= 3:   
+    start_dice(active_dice) 
+    while current_round <= 3:  
         play_round()
