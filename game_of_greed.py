@@ -6,12 +6,38 @@ score_dict = {
     "round_score" : 0,
 }
 
-
-
 current_round = 1
 
 active_dice = []
 saved_dice = []
+
+def read_file(path):
+    try:
+        with open(path) as file:
+            contents = file.read()
+
+        contents += ' - has been read'
+
+        with open('scores.txt', 'w') as outputfile:
+            outputfile.write(contents)
+
+        print('write completed')
+
+    finally:
+        print('Thanks for playing!')
+
+try:
+    read_file('house_rules.txt')
+
+except FileNotFoundError as error:
+    print('handled error: ')
+    print(error)
+
+except:
+    print('it was a different error')
+
+
+
 
 def start_game():
     start_game_prompt = input('Are you ready to start a game of greed? (y/n)')
@@ -55,19 +81,6 @@ Please separate your numbers with a space
         current_round += 3
 
 
-
-# def determine_score(vals):
-#     print(f'these are the number of ones: {saved_dice}')
-#     if saved_dice.count(1) == 1:
-#         score_dict["round_score"] += (saved_dice.count(1) * 100)
-
-#     elif saved_dice.count(1) == 2:
-#         score_dict["round_score"] += ((saved_dice.count(1) * 2) * 100)
-
-
-#     print(f'Your score for this round: {score_dict["round_score"]}')
-#     return vals
-
 def determine_score(dice_values):
     dice_summary = {
         1: dice_values.count(1),
@@ -103,7 +116,7 @@ def determine_score(dice_values):
 def play_round():
     roll_dice(active_dice)
     set_aside_dice()
-    determine_score(score_dict["total_score"])
+    # determine_score(saved_dice) 
     # when user is done picking dice:
         # calculate score for the round
         # give option to:

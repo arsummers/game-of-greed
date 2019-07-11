@@ -48,7 +48,6 @@ def test_fours():
 
 # TESTING FIVES
 # def test_fives():
-#     assert determine_score([5]) == 50
 #     assert determine_score([5] * 2) == 100
 #     assert determine_score([5] * 3) == 500
 #     assert determine_score([5] * 4) == 1000
@@ -57,6 +56,10 @@ def test_fours():
 
 def test_single_five():
     assert determine_score([5]) == 50
+
+def test_multiple_fives():
+    assert determine_score([5] * 2) == 100
+    
 
 
 # TESTING SIXES
