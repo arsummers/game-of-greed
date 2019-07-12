@@ -6,7 +6,7 @@ total_score = 0
 round_score = 0
 score = 0
 
-# rule_set = RuleSet()
+rule_set = RuleSet()
 
 current_round = 1
 
@@ -47,61 +47,7 @@ def roll_dice(dice):
     print(active_dice)
     return dice
 
-
-
-
 # TODO: game should put ruleset into a class that is used within the game to assign points. I think this'll be different/separate from the determine_score function, but I will have to make them interact with each other. My class will have the rules, and the things needed to pass the test. Maybe the function will live in here too?
-
-
-# TODO: find a way to work the array of round_saved_dice into the scoring function
-
-# def determine_score(dice_values):
-#     global score
-#     dice_summary = {
-#         1: dice_values.count(1),
-#         2: dice_values.count(2),
-#         3: dice_values.count(3),
-#         4: dice_values.count(4),
-#         5: dice_values.count(5),
-#         6: dice_values.count(6),
-#     }
-
-#     pair_counter = 0
-#     is_a_straight = True
-
-#     for value, count in dice_summary.items():
-#         if count != 1:
-#             is_a_straight = False
-#         if count == 2:
-#             pair_counter += 1    
-    
-#     if is_a_straight:
-#         return rule_set.get_score('3 pairs')
-
-#     score = 0
-    
-#     score += dice_summary[1] * 100
-#     score += dice_summary[5] * 50
-
-#     if pair_counter == 3:
-#         score = 1000
-
-#     # TODO: learn the syntax to make this work - should pass remaining ones tests when out of pseudo code
-#     # to test ones greater than count 3:
-#         # if count of 1 >= 3:
-#             # score = 1000
-#             # repeat for each die past 3
-#             # score += 1000
-
-#     # to test non-one rolls of 3 or more:
-#         # if count of that number >= 3:
-#             # score = num * 100
-#             # repeat for each die past 3
-#             # score += score
-    
-#     return score
-
-
 
 def set_aside_dice():
     global active_dice
@@ -136,18 +82,18 @@ Please separate your numbers with a space
             global current_round
             current_round += 3
         elif start_new_round_prompt == 'REROLL':
+            current_round += 1
             round_saved_for_scoring = []
             active_dice = []
             start_dice(active_dice)
             set_aside_dice()
-            current_round += 1
 
 
 
 def play_round():
     set_aside_dice()
     roll_dice(active_dice)
-    # determine_score(round_saved_for_scoring) 
+    rule_set.determine_score(round_saved_for_scoring) 
     # TODO: see below
     # when user is done picking dice:
         # calculate score for the round
