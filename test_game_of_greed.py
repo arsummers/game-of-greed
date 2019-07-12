@@ -1,6 +1,6 @@
 from game_of_greed import determine_score
 from game_of_greed import roll_dice
-from game_of_greed import RuleSet
+from rule_set import RuleSet
 
 def test_zilch():
     expected = 0

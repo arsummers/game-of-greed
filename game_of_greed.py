@@ -1,7 +1,7 @@
 import random
 from rule_set import RuleSet
-# global variables - they are all intentially mutable
 
+# global variables 
 total_score = 0
 round_score = 0
 score = 0
@@ -118,10 +118,13 @@ Please separate your numbers with a space
 
         # saved dice is getting appended as a list
         # will need to have it appended as plain integers, and reset when I reroll
-        round_saved_for_scoring.append(saved_dice)
 
         for i in saved_dice:
             active_dice.remove(i)
+        
+        for num in saved_dice:
+            round_saved_for_scoring.append(num)
+            
         print(f'These are the dice you saved: {round_saved_for_scoring}')
         print(f'These are the dice you have remaining. They have been rerolled for you:')
 
