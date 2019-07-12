@@ -1,15 +1,19 @@
 import random
-
+from rule_set import RuleSet
 # global variables - they are all intentially mutable
 
 total_score = 0
 round_score = 0
 score = 0
 
+rule_set = RuleSet()
+
 current_round = 1
 
 active_dice = []
 saved_dice = []
+round_saved_for_scoring = []
+total_saved_for_scoring = []
 
 def start_game():
     start_game_prompt = input('Are you ready to start a game of greed? (Y/N)')
@@ -44,36 +48,12 @@ def roll_dice(dice):
     return dice
 
 
-def set_aside_dice():
-    global active_dice
-    save_question = input('Would you live to save any dice?(Y/N)')
-
-    if save_question == 'Y':
-        print("""
-Which dice do you wish to set aside any of these dice for scoring? 
-Please separate your numbers with a space
-        """)
-        saved_dice = [int(n) for n in input().split(' ')]
-
-        for i in saved_dice:
-            active_dice.remove(i)
-        print(f'These are the dice you saved: {saved_dice}')
-        print(f'These are the dice you have remaining. They have been rerolled for you:')
-
-    elif save_question == 'N':
-        # breaks out of the game - currently set to 3 so I can playtest easily
-        start_new_round_prompt = input('Would you like to REROLL with 6 new dice and start a new round, or would you like to QUIT the game?')
-
-        if start_new_round_prompt == 'QUIT':
-            global current_round
-            current_round += 3
-        elif start_new_round_prompt == 'REROLL':
-            active_dice = []
-            start_dice(active_dice)
-            set_aside_dice()
-            current_round += 1
 
 
+# TODO: game should put ruleset into a class that is used within the game to assign points. I think this'll be different/separate from the determine_score function, but I will have to make them interact with each other. My class will have the rules, and the things needed to pass the test. Maybe the function will live in here too?
+
+
+# TODO: find a way to work the array of round_saved_dice into the scoring function
 
 def determine_score(dice_values):
     global score
@@ -96,7 +76,7 @@ def determine_score(dice_values):
             pair_counter += 1    
     
     if is_a_straight:
-        return 1500
+        return rule_set.get_score('3 pairs')
 
     score = 0
     
@@ -122,10 +102,50 @@ def determine_score(dice_values):
     return score
 
 
+
+def set_aside_dice():
+    global active_dice
+    global round_saved_for_scoring
+
+    save_question = input('Would you live to save any dice?(Y/N)')
+
+    if save_question == 'Y':
+        print("""
+Which dice do you wish to set aside any of these dice for scoring? 
+Please separate your numbers with a space
+        """)
+        saved_dice = [int(n) for n in input().split(' ')]
+
+        # saved dice is getting appended as a list
+        # will need to have it appended as plain integers, and reset when I reroll
+        round_saved_for_scoring.append(saved_dice)
+
+        for i in saved_dice:
+            active_dice.remove(i)
+        print(f'These are the dice you saved: {round_saved_for_scoring}')
+        print(f'These are the dice you have remaining. They have been rerolled for you:')
+
+    elif save_question == 'N':
+        # breaks out of the game - currently set to 3 so I can playtest easily
+        start_new_round_prompt = input('Would you like to REROLL with 6 new dice and start a new round, or would you like to QUIT the game?')
+
+        if start_new_round_prompt == 'QUIT':
+            global current_round
+            current_round += 3
+        elif start_new_round_prompt == 'REROLL':
+            round_saved_for_scoring = []
+            active_dice = []
+            start_dice(active_dice)
+            set_aside_dice()
+            current_round += 1
+
+
+
+
 def play_round():
     set_aside_dice()
     roll_dice(active_dice)
-    determine_score(saved_dice) 
+    determine_score(round_saved_for_scoring) 
     # TODO: see below
     # when user is done picking dice:
         # calculate score for the round

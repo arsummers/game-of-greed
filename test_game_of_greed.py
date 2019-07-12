@@ -1,5 +1,6 @@
 from game_of_greed import determine_score
 from game_of_greed import roll_dice
+from game_of_greed import RuleSet
 
 def test_zilch():
     expected = 0
@@ -108,5 +109,8 @@ def test_roll_dice():
     # not sure how to set this up
     # I need it to check that the length of the active dice list <= 6 and that none of their values are higher than 6
     assert roll_dice
+
+def test_rule_set():
+    assert RuleSet
 
 # TODO: insert test_read_file(), unsure of syntax since it has an argument
