@@ -6,7 +6,7 @@ total_score = 0
 round_score = 0
 score = 0
 
-rule_set = RuleSet()
+# rule_set = RuleSet()
 
 current_round = 1
 
