@@ -1,3 +1,4 @@
 STRAIGHT_SCORE=3000
 THREE_PAIRS=1500
-SIX_ONES=6666Scores: 0 - has been read
+SIX_ONES=6666
+Scores: 0 - has been read

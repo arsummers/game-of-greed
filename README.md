@@ -6,6 +6,7 @@
 Make a game emulating the game [Greed/Farkle](https://en.wikipedia.org/wiki/Dice_10000) in the python console
 
 
+
 ## Getting Started
 <!-- How to run on personal machine -->
 Clone and run with Python 3.7.3 All the dependencies are for testing.
@@ -26,4 +27,4 @@ Clone and run with Python 3.7.3 All the dependencies are for testing.
 
 07-10-2019 22:33 - more tests written, more tests passing. Basic game flow working. House rules and score sheet built but not fully incorporated yet.
 
-
+07-11-2019 20:06 - set aside and roll functions fully working
