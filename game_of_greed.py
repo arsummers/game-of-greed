@@ -52,6 +52,8 @@ def roll_dice(dice):
 def set_aside_dice():
     global active_dice
     global round_score
+    global total_score
+    global current_round
     global round_saved_for_scoring
 
     save_question = input('Would you live to save any dice?(Y/N)')
@@ -78,18 +80,20 @@ Please separate your numbers with a space
 
     elif save_question == 'N':
         # breaks out of the game - currently set to 3 so I can playtest easily
-        start_new_round_prompt = input('Would you like to REROLL with 6 new dice and start a new round, or would you like to QUIT the game?')
+        start_new_round_prompt = input('Would you like to bank your score for this round and REROLL with 6 new dice, or would you like to QUIT the game and see your final score?')
 
        
         if start_new_round_prompt == 'REROLL':
-            global current_round
             current_round += 1
             round_saved_for_scoring = []
             active_dice = []
+            total_score += round_score
             round_score = 0
+            print(f'Beginning of round {current_round}')
             start_dice(active_dice)
             set_aside_dice()
         elif start_new_round_prompt == 'QUIT':
+            total_score += round_score
             current_round += 3
 
 
@@ -129,7 +133,7 @@ def read_file(path):
         print('write completed')
 
     finally:
-        print('Thanks for playing!')
+        print(f'Thanks for playing! Your final score was {total_score}')
 
 try:
     read_file('house_rules.txt')
