@@ -8,7 +8,7 @@ score = 0
 
 rule_set = RuleSet()
 
-current_round = 1
+current_round = 0
 
 active_dice = []
 saved_dice = []
@@ -55,7 +55,8 @@ def set_aside_dice():
     global total_score
     global current_round
     global round_saved_for_scoring
-
+    
+    current_round += 1
     save_question = input('Would you live to save any dice?(Y/N)')
 
     if save_question == 'Y':
@@ -68,6 +69,7 @@ Please separate your numbers with a space
         current_score_for_roll = rule_set.determine_score(saved_dice)
         round_score += current_score_for_roll
         print(f'CURRENT SCORE FOR THIS ROLL: {round_score}')
+        print(f'TOTAL SCORE FOR THIS GAME: {total_score}')
 
         for i in saved_dice:
             active_dice.remove(i)
@@ -79,12 +81,11 @@ Please separate your numbers with a space
         print(f'These are the dice you have remaining. They have been rerolled for you:')
 
     elif save_question == 'N':
-        # breaks out of the game - currently set to 3 so I can playtest easily
+
         start_new_round_prompt = input('Would you like to bank your score for this round and REROLL with 6 new dice, or would you like to QUIT the game and see your final score?')
 
        
         if start_new_round_prompt == 'REROLL':
-            current_round += 1
             round_saved_for_scoring = []
             active_dice = []
             total_score += round_score
@@ -93,14 +94,14 @@ Please separate your numbers with a space
             start_dice(active_dice)
             set_aside_dice()
         elif start_new_round_prompt == 'QUIT':
+# breaks out of the game - currently set to 3 so I can playtest easily
             total_score += round_score
             current_round += 3
 
 
-def play_round():
+def play_round():   
     set_aside_dice()
     roll_dice(active_dice)
-    # TODO: Give option to BANK and add to 
     rule_set.determine_score(round_saved_for_scoring) 
     # TODO: see below
     # when user is done picking dice:
@@ -133,7 +134,7 @@ def read_file(path):
         print('write completed')
 
     finally:
-        print(f'Thanks for playing! Your final score was {total_score}')
+        print(f'Thanks for playing! Your final score was {total_score} after {current_round} rounds')
 
 try:
     read_file('house_rules.txt')
