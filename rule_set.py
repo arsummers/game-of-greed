@@ -1,9 +1,9 @@
 class RuleSet:
-    # TODO: make functions or method to get score
-    # how storing scores, scoring, rules for scoring
+    # TODO: have my pool of saved dice interacting with the dice summary, and have the dice summary interact with the rules dictionary
 
     def __init__(self):
         pass
+        # self.dice_values = dice_values
 
     rules_dict = {
         "straight": 1500,
@@ -48,6 +48,8 @@ class RuleSet:
 
 
     def determine_score(self, dice_values):           
+
+# 
 
         dice_summary = {
                 1: dice_values.count(1),

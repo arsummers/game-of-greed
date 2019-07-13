@@ -61,10 +61,8 @@ Which dice do you wish to set aside any of these dice for scoring?
 Please separate your numbers with a space
         """)
         saved_dice = [int(n) for n in input().split(' ')]
-
-        # saved dice is getting appended as a list
-        # will need to have it appended as plain integers, and reset when I reroll
-
+        current_score = rule_set.determine_score(saved_dice)
+        print(f'CURRENT SCORE: {current_score}')
         for i in saved_dice:
             active_dice.remove(i)
         
@@ -93,6 +91,7 @@ Please separate your numbers with a space
 def play_round():
     set_aside_dice()
     roll_dice(active_dice)
+    # TODO: Give option to BANK and add to 
     rule_set.determine_score(round_saved_for_scoring) 
     # TODO: see below
     # when user is done picking dice:
