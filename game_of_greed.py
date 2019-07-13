@@ -51,6 +51,7 @@ def roll_dice(dice):
 
 def set_aside_dice():
     global active_dice
+    global round_score
     global round_saved_for_scoring
 
     save_question = input('Would you live to save any dice?(Y/N)')
@@ -61,8 +62,11 @@ Which dice do you wish to set aside any of these dice for scoring?
 Please separate your numbers with a space
         """)
         saved_dice = [int(n) for n in input().split(' ')]
-        current_score = rule_set.determine_score(saved_dice)
-        print(f'CURRENT SCORE: {current_score}')
+
+        current_score_for_roll = rule_set.determine_score(saved_dice)
+        round_score += current_score_for_roll
+        print(f'CURRENT SCORE FOR THIS ROLL: {round_score}')
+
         for i in saved_dice:
             active_dice.remove(i)
         
@@ -76,16 +80,17 @@ Please separate your numbers with a space
         # breaks out of the game - currently set to 3 so I can playtest easily
         start_new_round_prompt = input('Would you like to REROLL with 6 new dice and start a new round, or would you like to QUIT the game?')
 
-        if start_new_round_prompt == 'QUIT':
+       
+        if start_new_round_prompt == 'REROLL':
             global current_round
-            current_round += 3
-        elif start_new_round_prompt == 'REROLL':
             current_round += 1
             round_saved_for_scoring = []
             active_dice = []
+            round_score = 0
             start_dice(active_dice)
             set_aside_dice()
-
+        elif start_new_round_prompt == 'QUIT':
+            current_round += 3
 
 
 def play_round():
