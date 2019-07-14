@@ -89,18 +89,30 @@ class RuleSet:
             score += (dice_summary[1] * 1000) - 2600
 
 
-        if dice_summary[2] > 3:
+        if dice_summary[2] < 3:
             score += dice_summary[2] * 0
+        # covers 3 and 4 dice
         elif dice_summary[2] >= 3:
             score += (dice_summary[2] * 200) - 400
+        elif dice_summary[2] == 5:
+            score += (dice_summary[2] * 200) + 400
+        elif dice_summary[2] == 6:
+            score += (dice_summary[2] * 200) * 4
 
-        if dice_summary[3] > 3:
+
+        if dice_summary[3] < 3:
             score += dice_summary[3] * 0
+        # covers 3 and 4 dice
         elif dice_summary[3] >= 3:
             score += (dice_summary[3] * 300) - 600
+        elif dice_summary[3] == 5:
+            score += (dice_summary[3] * 300) * 2
+        elif dice_summary[3] == 6:
+            score += (dice_summary[3] * 300) * 4
+        
 
 
-        if dice_summary[4] > 3:
+        if dice_summary[4] < 3:
             score += dice_summary[4] * 0
         elif dice_summary[4] >= 3:
             score += (dice_summary[4] * 400) - 800
@@ -109,7 +121,7 @@ class RuleSet:
             score += (dice_summary[5] * 500) - 1150
 
 
-        if dice_summary[6] > 3:
+        if dice_summary[6] < 3:
             score += dice_summary[6] * 0
         elif dice_summary[6] >= 3:
             score += (dice_summary[6] * 600) - 1200
@@ -117,17 +129,5 @@ class RuleSet:
         if pair_counter == 3:
             score = 1000
 
-        # TODO: learn the syntax to make this work - should pass remaining ones tests when out of pseudo code
-        # to test ones greater than count 3:
-            # if count of 1 >= 3:
-                # score = 1000
-                # repeat for each die past 3
-                # score += 1000
-
-        # to test non-one rolls of 3 or more:
-            # if count of that number >= 3:
-                # score = num * 100
-                # repeat for each die past 3
-                # score += score
         
         return score
