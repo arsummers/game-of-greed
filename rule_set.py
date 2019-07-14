@@ -71,10 +71,41 @@ class RuleSet:
                 pair_counter += 1    
         
         if is_a_straight:
-            return self.determine_score("straight")
+            return self.determine_score("rules_dict.straight")
 
+        
         score += dice_summary[1] * 100
         score += dice_summary[5] * 50
+
+
+
+        if dice_summary[1] >= 3:
+            score += dice_summary[1] * 1000
+
+        if dice_summary[2] > 3:
+            score += dice_summary[2] * 0
+        elif dice_summary[2] >= 3:
+            score += (dice_summary[2] * 200) - 400
+
+        if dice_summary[3] > 3:
+            score += dice_summary[3] * 0
+        elif dice_summary[3] >= 3:
+            score += (dice_summary[3] * 300) - 600
+
+
+        if dice_summary[4] > 3:
+            score += dice_summary[4] * 0
+        elif dice_summary[4] >= 3:
+            score += (dice_summary[4] * 400) - 800
+
+        if dice_summary[5] >= 3:
+            score += (dice_summary[5] * 500) - 1150
+
+
+        if dice_summary[6] > 3:
+            score += dice_summary[6] * 0
+        elif dice_summary[6] >= 3:
+            score += (dice_summary[6] * 600) - 1200
 
         if pair_counter == 3:
             score = 1000

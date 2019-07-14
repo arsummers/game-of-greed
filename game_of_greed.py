@@ -16,6 +16,7 @@ round_saved_for_scoring = []
 total_saved_for_scoring = []
 
 def start_game():
+    global current_round
     start_game_prompt = input('Are you ready to start a game of greed? (Y/N)')
     
     if start_game_prompt == 'Y':
@@ -56,7 +57,6 @@ def set_aside_dice():
     global current_round
     global round_saved_for_scoring
     
-    current_round += 1
     save_question = input('Would you live to save any dice?(Y/N)')
 
     if save_question == 'Y':
@@ -90,6 +90,7 @@ Please separate your numbers with a space
             active_dice = []
             total_score += round_score
             round_score = 0
+            current_round += 1
             print(f'Beginning of round {current_round}')
             start_dice(active_dice)
             set_aside_dice()
@@ -103,14 +104,6 @@ def play_round():
     set_aside_dice()
     roll_dice(active_dice)
     rule_set.determine_score(round_saved_for_scoring) 
-    # TODO: see below
-    # when user is done picking dice:
-        # calculate score for the round
-        # give option to:
-            # re-roll remaining dice- DONE
-                # if re-rolled and no score, zero out score for the round
-            # bank score and start a new round with 6 dice
-                # add banked score to total score
                    
 # This initiates the game, and allows the tests to accept input
 if __name__ == "__main__":

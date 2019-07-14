@@ -28,3 +28,5 @@ Clone and run with Python 3.7.3 All the dependencies are for testing.
 07-10-2019 22:33 - more tests written, more tests passing. Basic game flow working. House rules and score sheet built but not fully incorporated yet.
 
 07-11-2019 20:06 - set aside and roll functions fully working
+
+07-13-2019 15:20 - game flow finished
