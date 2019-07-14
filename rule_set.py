@@ -79,8 +79,15 @@ class RuleSet:
 
 
 
-        if dice_summary[1] >= 3:
-            score += dice_summary[1] * 1000
+        if dice_summary[1] == 3:
+            score += (dice_summary[1] * 1000) - 2300
+        elif dice_summary[1] == 4:
+            score += (dice_summary[1] * 1000) - 2400
+        elif dice_summary[1] == 5:
+            score += (dice_summary[1] * 1000) - 2500
+        elif dice_summary[1] == 6:
+            score += (dice_summary[1] * 1000) - 2600
+
 
         if dice_summary[2] > 3:
             score += dice_summary[2] * 0

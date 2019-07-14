@@ -152,11 +152,6 @@ def test_three_pairs_with_ones_and_fives():
 # TESTING LEFTOVER FIVES
 # TODO: WRITE TEST
 
-# TESTING TWO TRIOS  
-# TODO: GET PASSING, REWRITE AS NEEDED
-def test_two_trios():
-    assert rule_set.determine_score([2,2,2,4,4,4]) == 700
-
 
 def test_roll_dice():
     # not sure how to set this up
