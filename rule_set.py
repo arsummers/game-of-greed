@@ -3,7 +3,6 @@ class RuleSet:
 
     def __init__(self):
         pass
-        # self.dice_values = dice_values
 
     rules_dict = {
         "straight": 1500,
@@ -95,7 +94,7 @@ class RuleSet:
         elif dice_summary[2] >= 3:
             score += (dice_summary[2] * 200) - 400
         elif dice_summary[2] == 5:
-            score += (dice_summary[2] * 200) + 400
+            score += (dice_summary[2] * 200) + 600
         elif dice_summary[2] == 6:
             score += (dice_summary[2] * 200) * 4
 
@@ -116,15 +115,27 @@ class RuleSet:
             score += dice_summary[4] * 0
         elif dice_summary[4] >= 3:
             score += (dice_summary[4] * 400) - 800
+        elif dice_summary[4] == 5:
+            score += (dice_summary[4] * 400) * 2
+        elif dice_summary[4] == 6:
+            score += (dice_summary[4] * 400) * 4
 
         if dice_summary[5] >= 3:
             score += (dice_summary[5] * 500) - 1150
+        if dice_summary[5] == 5:
+            score += (dice_summary[5] * 500) * 2
+        if dice_summary[5] == 6:
+            score += (dice_summary[5] * 500) * 4
 
 
         if dice_summary[6] < 3:
             score += dice_summary[6] * 0
         elif dice_summary[6] >= 3:
             score += (dice_summary[6] * 600) - 1200
+        elif dice_summary[6] == 5:
+            score += (dice_summary[6] * 600) * 2
+        elif dice_summary[6] == 5:
+            score += (dice_summary[6] * 600) * 4
 
         if pair_counter == 3:
             score = 1000

@@ -119,7 +119,7 @@ def read_file(path):
         with open(path) as file:
             contents = file.read()
 
-        contents += f'Scores: {score} - has been read'
+        contents += f'Scores: {total_score} - has been read'
 
         with open('scores.txt', 'w') as outputfile:
             outputfile.write(contents)
