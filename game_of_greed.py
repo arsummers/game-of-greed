@@ -8,7 +8,7 @@ score = 0
 
 rule_set = RuleSet()
 
-current_round = 1
+current_round = 0
 
 active_dice = []
 saved_dice = []
@@ -16,6 +16,7 @@ round_saved_for_scoring = []
 total_saved_for_scoring = []
 
 def start_game():
+    global current_round
     start_game_prompt = input('Are you ready to start a game of greed? (Y/N)')
     
     if start_game_prompt == 'Y':
@@ -51,8 +52,11 @@ def roll_dice(dice):
 
 def set_aside_dice():
     global active_dice
+    global round_score
+    global total_score
+    global current_round
     global round_saved_for_scoring
-
+    
     save_question = input('Would you live to save any dice?(Y/N)')
 
     if save_question == 'Y':
@@ -62,8 +66,10 @@ Please separate your numbers with a space
         """)
         saved_dice = [int(n) for n in input().split(' ')]
 
-        # saved dice is getting appended as a list
-        # will need to have it appended as plain integers, and reset when I reroll
+        current_score_for_roll = rule_set.determine_score(saved_dice)
+        round_score += current_score_for_roll
+        print(f'CURRENT SCORE FOR THIS ROLL: {round_score}')
+        print(f'TOTAL SCORE FOR THIS GAME: {total_score}')
 
         for i in saved_dice:
             active_dice.remove(i)
@@ -75,33 +81,29 @@ Please separate your numbers with a space
         print(f'These are the dice you have remaining. They have been rerolled for you:')
 
     elif save_question == 'N':
-        # breaks out of the game - currently set to 3 so I can playtest easily
-        start_new_round_prompt = input('Would you like to REROLL with 6 new dice and start a new round, or would you like to QUIT the game?')
 
-        if start_new_round_prompt == 'QUIT':
-            global current_round
-            current_round += 3
-        elif start_new_round_prompt == 'REROLL':
-            current_round += 1
+        start_new_round_prompt = input('Would you like to bank your score for this round and REROLL with 6 new dice, or would you like to QUIT the game and see your final score?')
+
+       
+        if start_new_round_prompt == 'REROLL':
             round_saved_for_scoring = []
             active_dice = []
+            total_score += round_score
+            round_score = 0
+            current_round += 1
+            print(f'Beginning of round {current_round}')
             start_dice(active_dice)
             set_aside_dice()
+        elif start_new_round_prompt == 'QUIT':
+# breaks out of the game - currently set to 3 so I can playtest easily
+            total_score += round_score
+            current_round += 3
 
 
-
-def play_round():
+def play_round():   
     set_aside_dice()
     roll_dice(active_dice)
     rule_set.determine_score(round_saved_for_scoring) 
-    # TODO: see below
-    # when user is done picking dice:
-        # calculate score for the round
-        # give option to:
-            # re-roll remaining dice- DONE
-                # if re-rolled and no score, zero out score for the round
-            # bank score and start a new round with 6 dice
-                # add banked score to total score
                    
 # This initiates the game, and allows the tests to accept input
 if __name__ == "__main__":
@@ -117,7 +119,7 @@ def read_file(path):
         with open(path) as file:
             contents = file.read()
 
-        contents += f'Scores: {score} - has been read'
+        contents += f'Scores: {total_score} - has been read'
 
         with open('scores.txt', 'w') as outputfile:
             outputfile.write(contents)
@@ -125,7 +127,7 @@ def read_file(path):
         print('write completed')
 
     finally:
-        print('Thanks for playing!')
+        print(f'Thanks for playing! Your final score was {total_score} after {current_round} rounds')
 
 try:
     read_file('house_rules.txt')
